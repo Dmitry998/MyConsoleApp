@@ -2,14 +2,20 @@
 
 namespace MyConsoleApp
 {
+    delegate void Output();
     class A
     {
-        private int _a = 4;
-        private int _b = 5;
+        Output output;
 
-        public int Method()
+        public Output Output { get { return output; } set { output = value; } }
+        public A(Output output)
         {
-            return _a + _b;
+            this.output = output;
+        }
+
+        public void Method()
+        {
+            output.Invoke();
         }
     }
 
@@ -17,10 +23,20 @@ namespace MyConsoleApp
     {
         static void Main(string[] args)
         {
-            A my_a = new A();
-            Console.WriteLine(my_a.Method());
-            Console.WriteLine("Hello World!");
+            A my_a = new A(Message);
+            my_a.Method();
+            my_a.Output = Message2;
+            my_a.Method();
             Console.Read();
+
+            void Message()
+            {
+                Console.WriteLine("Так");
+            }
+            void Message2()
+            {
+                Console.WriteLine("Сяк");
+            }
         }
     }
 }
